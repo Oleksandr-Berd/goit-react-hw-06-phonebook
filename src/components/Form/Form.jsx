@@ -1,8 +1,11 @@
 import { useState } from 'react';
 import { nanoid } from 'nanoid';
 import css from '../Form/Form.module.css';
+import { useSelector, useDispatch } from 'react-redux';
+import { addContact } from 'Redux/store';
+import { deleteContact } from 'Redux/store';
 
-export default function Form({ onSubmit }) {
+export default function Form() {
   const [id] = useState('');
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
@@ -22,14 +25,22 @@ export default function Form({ onSubmit }) {
     }
   };
 
+  const dispatch = useDispatch();
+
   const handleSubmit = evt => {
     evt.preventDefault();
 
-    onSubmit({ name, number, id: nanoid() });
+    dispatch(addContact([name, number]));
 
     setName('');
     setNumber('');
   };
+
+  // console.log(name);
+
+  const valueContacts = useSelector(state => state.contacts);
+
+  console.log();
 
   return (
     <form onSubmit={handleSubmit} className={css.form}>
