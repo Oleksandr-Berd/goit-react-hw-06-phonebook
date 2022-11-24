@@ -13,12 +13,7 @@ const Filter = () => {
   return (
     <label htmlFor="" className={css.label__filter}>
       Find contacts by name
-      <input
-        type="text"
-        // value={value}
-        onChange={onChange}
-        className={css.input__filter}
-      />
+      <input type="text" onChange={onChange} className={css.input__filter} />
     </label>
   );
 };
