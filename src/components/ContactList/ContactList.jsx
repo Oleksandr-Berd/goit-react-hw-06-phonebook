@@ -2,20 +2,26 @@ import css from '../ContactList/ContactList.module.css';
 import { useSelector } from 'react-redux';
 import { getContacts } from 'Redux/selectors';
 import { getStatusFilter } from 'Redux/selectors';
-import { statusFilters } from 'Redux/constants';
-import PropTypes from 'prop-types';
+
 import { nanoid } from 'nanoid';
 import { useDispatch } from 'react-redux';
 import { deleteContact } from 'Redux/contactsSlice';
 
-// export const TaskList = () => {
-//   const contacts = useSelector(getContacts);
-//   const statusFilter = useSelector(getStatusFilter);
-// const visibleTasks = getVisibleTasks(tasks, statusFilter);
-
 const ContactList = () => {
   const contacts = useSelector(getContacts);
-  const statusFilter = useSelector(getStatusFilter);
+  const filters = useSelector(getStatusFilter);
+  const getVisibleContacts = () => {
+    console.log(filters.filters);
+
+    if (filters.filters !== '') {
+      return contacts.filter(contact =>
+        contact.name.toLowerCase().includes(filters.filters.toLowerCase())
+      );
+    }
+    return contacts;
+  };
+
+  const visibleContacts = getVisibleContacts(contacts, filters);
 
   const dispatch = useDispatch();
 
@@ -23,12 +29,10 @@ const ContactList = () => {
     dispatch(deleteContact(evt));
   };
 
-  console.log(contacts);
-
   return (
     <ul className={css.contactList}>
       {contacts.length > 0 &&
-        contacts.map(({ name, number }) => (
+        visibleContacts.map(({ name, number }) => (
           <li className={css.contacts__item} key={nanoid()}>
             <p className={css.contacts__name}>{name}</p>
             <p className={css.contacts__number}>{number}</p>
