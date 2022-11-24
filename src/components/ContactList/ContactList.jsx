@@ -11,9 +11,9 @@ const ContactList = () => {
   const contacts = useSelector(getContacts);
   const filters = useSelector(getStatusFilter);
   const getVisibleContacts = () => {
-    if (filters.filters !== '') {
+    if (filters !== '') {
       return contacts.filter(contact =>
-        contact.name.toLowerCase().includes(filters.filters.toLowerCase())
+        contact.name.toLowerCase().includes(filters.toLowerCase())
       );
     }
     return contacts;
