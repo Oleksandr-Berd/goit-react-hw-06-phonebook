@@ -1,9 +1,11 @@
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { nanoid } from 'nanoid';
 import css from '../Form/Form.module.css';
+import { addContact } from 'Redux/contactsSlice';
 
-export default function Form({ onSubmit }) {
-  const [id] = useState('');
+export default function Form() {
+  // const [id] = useState('');
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
 
@@ -22,10 +24,16 @@ export default function Form({ onSubmit }) {
     }
   };
 
+  const dispatch = useDispatch();
+
   const handleSubmit = evt => {
     evt.preventDefault();
+    // console.log(evt.target.elements.value);
 
-    onSubmit({ name, number, id: nanoid() });
+    dispatch(addContact(name, number));
+    // form.reset();
+    // console.log(name);
+    // onSubmit({ name, number, id: nanoid() });
 
     setName('');
     setNumber('');
@@ -43,7 +51,7 @@ export default function Form({ onSubmit }) {
           value={name}
           pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
           title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
-          handleid={nanoid()}
+          // handleid={nanoid()}
           required
         />
       </label>
@@ -57,12 +65,12 @@ export default function Form({ onSubmit }) {
           value={number}
           pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
           title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
-          handleid={id}
+          // handleid={id}
           required
         />
       </label>
 
-      <button type="submit" disabled={!name} className={css.btn__add}>
+      <button type="submit" className={css.btn__add}>
         Add contact
       </button>
     </form>
